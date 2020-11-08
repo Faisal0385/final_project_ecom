@@ -4,27 +4,48 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 
 class manage_product extends Controller
 {
-    //
-    public function showAll()
+    public function index(){
+        return view('admin.product');
+    }
+
+    public function show_all()
     {
-        # code...
-        $data = Product::get();
-        //return view('admin.category', ['data' => $data]);
+
+        $data = DB::table('products')
+            ->join('categories','categories.id','=','products.product_cat')
+            ->get();
+        
+        //can not edit
+        // $data = Product::get();
         return $data;
     }
 
-    public function showSingleData($id)
+    public function product_single_view($id)
     {
-        # code...
-        $data = Product::where('id', $id)->get();
-        //return view('admin.category', ['data' => $data]);
-        return $data;
+        $data = Product::find($id);
+        return view('admin.product.productEdit', ['data' => $data]);
     }
 
-    public function insert_Pro(Request $req)
+    public function product_edit(Request $req)
+    {
+        $Product = Product::find($req->pro_id);
+
+        $Product->Product_name  = $req->pro_name;
+        $Product->product_cat   = $req->pro_cat;
+        $Product->product_size  = $req->pro_size;
+        $Product->product_price = $req->pro_price;
+        $Product->product_des   = $req->pro_des;
+
+        $Product->save();
+
+        return back()->with('msg', 'Data Updated Sucessfully.');
+    }
+
+    public function insert_pro(Request $req)
     {
         # code...
         // try{
@@ -41,8 +62,6 @@ class manage_product extends Controller
         //     'product_size' => 'required|max:255',
         //     'product_cat' => 'required|max:255'
         // ]);
-        
-    
 
         $Product = new Product;
 
@@ -56,36 +75,47 @@ class manage_product extends Controller
 
         $Product->save();
 
-        if($Product->save()){
+        if ($Product->save()) {
             return back()->with('msg', 'Data Inserted Sucessfully.');
-        }else{
+        } else {
             return back()->with('error', 'Something went wrong.');
         }
-        
     }
 
-    public function delete_Pro($id)
+    public function delete_pro($id)
     {
-
         Product::where('id', $id)->delete();
-
         return back()->with('msg', 'Data Delete Sucessfully.');
-        
     }
 
-    public function edit_Cat(Request $req)
+
+
+
+    #############################
+    #############################
+    #############################
+    ######    FRONTEND    #######
+    #############################
+    #############################
+    #############################
+
+
+    public function show_all_products()
     {
-
-        // $validatedData = $req->validate([
-        //     'category_name' => 'required|unique:categories|max:255',
-        // ]);
-
-        $Category = Product::find($req->cat_id);
-        $Category->category_name = $req->category_edit_name;
-        $Category->save();
-
-        return 1;
-
-
+        $data = Product::get();
+        return view('frontend.index', ['products' => $data]);
     }
+
+    public function all_products()
+    {
+        $data = Product::get();
+        return view('frontend.products', ['products' => $data]);
+    }
+
+    public function product_details($id)
+    {  
+        $data = Product::find($id);
+        return view('frontend.product-details', ['product' => $data]);
+    }
+
 }

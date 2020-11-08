@@ -2,10 +2,9 @@
 @section('title','Category')
 @section('content')
 
-
+<br><br>
 <div class="container">
-    <br>
-    <br>
+    <h2 class="text-center">Category List</h2>
     <div class="d-flex justify-content-center">
         @if ($errors->any())
         <div class="alert alert-danger ">
@@ -35,7 +34,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="/insertCat" class="text-center p-1 " method="POST">
+                        <form action="/admin/category/insert" class="text-center p-1 " method="POST">
                             @csrf
                             <input type="text" id="category_name" name="category_name" class="form-control mb-4" placeholder="Add Category" />
                             <div class="modal-footer d-flex justify-content-center">
@@ -112,7 +111,7 @@
 
     //get single id Data to edit 
     function getValue(id) {
-        axios.get('/showSingleData/' + id)
+        axios.get('/admin/category/single/' + id)
             .then(function(response) {
                 // handle success
                 var data = response.data;
@@ -132,12 +131,12 @@
         var category_edit_name = $("#category_edit_name").val();
         var cat_id = $("#cat_id").val();
 
-        axios.post('/editCat/', {
+        axios.post('/admin/category/edit', {
                 category_edit_name: category_edit_name,
                 cat_id: cat_id
             })
             .then(function(response) {
-                console.log(response.data);
+                
                 if (response.data == 1) {
 
                     $("#category_edit_name").attr("value", '');
@@ -151,7 +150,7 @@
     }
 
     function updateShow() {
-        axios.get('/showCat')
+        axios.get('/admin/category/showAll')
             .then(function(response) {
                 // handle success
                 var data = response.data;
@@ -161,7 +160,7 @@
                     $('<tr>').html(
                         "<th>" + data[i].category_name + "</th>" +
                         "<th><a class='edit_btn' data-id='" + data[i].id + "' ><i class='fas fa-edit'></i></a></th>" +
-                        "<th><a href='/deleteCat/" + data[i].id + "'><i class='fas fa-trash-alt'></i></a></th>"
+                        "<th><a href='/admin/category/delete/" + data[i].id + "'><i class='fas fa-trash-alt'></i></a></th>"
                     ).appendTo('#cat_table');
                 }
 

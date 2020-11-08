@@ -2,10 +2,9 @@
 @section('title','Product')
 @section('content')
 
-
+<br><br>
 <div class="container">
-    <br>
-    <br>
+    <h2 class="text-center">Product Details</h2>
     <div class="d-flex justify-content-center">
         @if ($errors->any())
         <div class="alert alert-danger ">
@@ -24,9 +23,10 @@
         </div>
         @endif
     </div>
+
     <div class="row d-flex justify-content-right">
         <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header text-center">
                         <h4 class="modal-title w-100 font-weight-bold">Add Product Details</h4>
@@ -35,19 +35,29 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form class="text-center p-1 " action="/insertPro" method="POST">
+                        <form class="text-center p-1 " action="/admin/product/insert" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="text" id="pro_name" name="pro_name" class="form-control mb-4" placeholder="Product Name" />
-                            <select  class="browser-default custom-select form-control mb-4" name="pro_cat" id="pro_cat">
-                            <option > Select Category </option>
+                            <select class="browser-default custom-select form-control mb-4" name="pro_cat" id="pro_cat">
+                                <option> Select Category </option>
 
                             </select>
                             <input type="text" id="pro_size" name="pro_size" class="form-control mb-4" placeholder="Size" />
                             <input type="text" id="pro_price" name="pro_price" class="form-control mb-4" placeholder="Price" />
                             <div class="form-group green-border-focus text-left">
-                                <label for="product description ">Product Description</label>
-                                <textarea class="form-control" id="pro_des" name="pro_des" rows="3"></textarea>
+                                <textarea class="form-control" id="pro_des" name="pro_des" rows="3" placeholder="Product Description"></textarea>
                             </div>
+                            
+                            <!-- <div class="file-field">
+                                <div class="btn btn-primary btn-sm float-left">
+                                    <span>Choose Images.</span>
+                                    <input type="file" name="pro_images" multiple>
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" name="pro_images" type="text" placeholder="Select files with extension jpg, jpeg, png only.">
+                                </div>
+                            </div> -->
+
                             <div class="modal-footer d-flex justify-content-center">
                                 <button type="submit" name="submit" class="btn btn-sm btn-deep-orange">Add</button>
                             </div>
@@ -112,7 +122,7 @@
 
     // });
     function updateShow() {
-        axios.get('/showPro')
+        axios.get('/admin/product/showAll')
             .then(function(response) {
                 // handle success
                 var data = response.data;
@@ -120,13 +130,13 @@
 
                 for (var i = 0; i < data.length; i++) {
                     $('<tr>').html(
-                        "<th>" + data[i].product_img + "</th>" +
+                        "<th><i class='fas fa-images'></i></th>" +
                         "<th>" + data[i].product_name + "</th>" +
                         "<th>" + data[i].product_price + "</th>" +
                         "<th>" + data[i].product_size + "</th>" +
-                        "<th>" + data[i].product_cat + "</th>" +
-                        "<th><a class='edit_btn' data-id='" + data[i].id + "' ><i class='fas fa-edit'></i></a></th>" +
-                        "<th><a href='/deletePro/" + data[i].id + "'><i class='fas fa-trash-alt'></i></a></th>"
+                        "<th>" + data[i].category_name + "</th>" +
+                        "<th><a href='/admin/product/edit/" + data[i].id + "' data-id='" + data[i].id + "' ><i class='fas fa-edit'></i></a></th>" +
+                        "<th><a href='/admin/product/delete/" + data[i].id + "'><i class='fas fa-trash-alt'></i></a></th>"
                     ).appendTo('#pro_table');
                 }
 
@@ -149,17 +159,14 @@
     }
 
 
-    document.getElementById("pro_cat").addEventListener("change", pro_cat() );
-    
+    document.getElementById("pro_cat").addEventListener("change", pro_cat());
+
     function pro_cat() {
 
-        console.log("kasdhfksd");
-        axios.get('/showCat')
+        axios.get('/admin/category/showAll')
             .then(function(response) {
                 // handle success
                 var data = response.data;
-
-                console.log(data);
 
                 for (var i = 0; i < data.length; i++) {
                     $('#pro_cat').append(

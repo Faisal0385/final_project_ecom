@@ -7,24 +7,25 @@ use App\Models\Category;
 
 class manage_category extends Controller
 {
+    public function index(){
+        return view('admin.category');
+    }
     //
-    public function showAll()
+    public function show_all()
     {
         # code...
         $data = Category::get();
-        //return view('admin.category', ['data' => $data]);
         return $data;
     }
 
-    public function showSingleData($id)
+    public function category_single_view($id)
     {
         # code...
         $data = Category::where('id', $id)->get();
-        //return view('admin.category', ['data' => $data]);
         return $data;
     }
 
-    public function insert_Cat(Request $req)
+    public function insert_cat(Request $req)
     {
         # code...
         // try{
@@ -54,7 +55,7 @@ class manage_category extends Controller
         
     }
 
-    public function delete_Cat($id)
+    public function delete_cat($id)
     {
 
         Category::where('id', $id)->delete();
@@ -63,7 +64,7 @@ class manage_category extends Controller
         
     }
 
-    public function edit_Cat(Request $req)
+    public function edit_cat(Request $req)
     {
 
         // $validatedData = $req->validate([

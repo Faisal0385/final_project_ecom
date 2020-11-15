@@ -99,16 +99,17 @@ Route::get('/', [manage_product::class, 'show_all_products']);
 
 Route::post('/addCart', [manage_cart::class, 'add_cart']);
 Route::get('/removeCart/{id}', [manage_cart::class, 'remove_cart']);
-Route::get('getCartSum', [manage_cart::class, 'get_cart_sum']);
-Route::get('updateQty', [manage_cart::class, 'update_qty']);
+Route::get('/getCartSum', [manage_cart::class, 'get_cart_sum']);
+Route::post('/updateQty', [manage_cart::class, 'update_qty']);
+Route::get('/productDetailsEdit/{id}', [manage_cart::class, 'product_details_edit']);
 
 
 Route::get('/products', [manage_product::class, 'all_products']);
 Route::get('/productDetails/{id}', [manage_product::class, 'product_details']);
 
 
-Route::get('/order', [manage_cart::class, 'show_all_cart']);
 
+Route::get('/order', [manage_cart::class, 'show_all_cart']);
 
 
 Route::get('/account', function () {

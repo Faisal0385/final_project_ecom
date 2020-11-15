@@ -17,10 +17,9 @@ class manage_product extends Controller
 
         $data = DB::table('products')
             ->join('categories','categories.id','=','products.product_cat')
+            ->select('products.*','categories.category_name')
             ->get();
-        
-        //can not edit
-        // $data = Product::get();
+            
         return $data;
     }
 
@@ -117,5 +116,6 @@ class manage_product extends Controller
         $data = Product::find($id);
         return view('frontend.product-details', ['product' => $data]);
     }
+
 
 }

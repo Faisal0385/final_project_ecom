@@ -63,8 +63,6 @@
     <script src="{{asset('admin/js/axios.min.js')}}"></script>
     @yield('javascript')
 
-    
-
 
 
 

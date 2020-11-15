@@ -2,6 +2,8 @@
 @section('title', 'Orders')
 @section('content')
 
+@include('frontend.include.navbar')
+
 <div class="header__container">
   <div class="d-flex justify-content-center">
     @if ($errors->any())
@@ -22,13 +24,12 @@
     @endif
   </div>
 
-  @include('frontend.include.navbar')
-
   <!-- Cart Item Details -->
   <div class="small-container cart-page">
     <table>
       <tr>
         <th>Product</th>
+        <th>Size</th>
         <th>Quantity</th>
         <th>Subtotal</th>
       </tr>
@@ -39,15 +40,22 @@
             <img src="{{asset('frontend/images/buy-1.jpg')}}" alt="" />
             <div>
               <p>{{$item->product_name}}</p>
-              <small>Price: ${{$item->product_price}}</small><br>
+              <small>Price: <strong>${{$item->product_price}}</strong> </small><br>
               <a href="/removeCart/{{$item->id}}">Remove</a>
             </div>
           </div>
         </td>
+        
         <td>
-        <div class="col-md-3">
-          <input type="number" class="form-control" onchange="updateQty()" data-value="{{$item->id}}" class="QTY" min="1" value="{{$item->qty}}" />
-        </div>
+          <div class="col-md-3">
+            <form action="/updateQty" method="post">
+              @csrf
+              <input type="hidden" name="id" value={{$item->id}}>
+              <input type="number" class="form-control" name="qty" min="1" value="{{$item->qty}}" />
+              <button type="submit" class="btn btn-outline-warning waves-effect btn-sm">Update</button>
+            </form>
+            <a href="/productDetailsEdit/{{$item->carts_id}}">Edit</a>
+          </div>
         </td>
         <td>$<span class="SubPrice">{{$item->qty * $item->product_price}}</span></td>
       </tr>

@@ -61,25 +61,7 @@
     let Total = valSum + tax;
 
     document.getElementById('total').innerText = Total;
-
-    //get single id Data to edit 
-    // function updateQty() {
-    //     var va = document.getElementById('QTY').value;
-    //     console.log(va);
-
-    //     const a = document.querySelector("input");
-
-    //     console.log(a.dataset.value);
-    //     axios.get('/updateQty')
-    //         .then(function(response) {
-    //             // handle success
-    //             // var data = response.data;
-    //             // document.getElementById('CartSum').innerHTML = data;
-    //         })
-    //         .catch(function(error) {
-    //             // handle error
-    //         });
-    // }
+    
 
     var MenuItems = document.getElementById("MenuItems");
     MenuItems.style.maxHeight = "0px";
